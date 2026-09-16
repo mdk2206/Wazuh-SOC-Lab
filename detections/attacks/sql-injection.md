@@ -50,19 +50,36 @@ Bối cảnh:Khi kẻ tấn công thử tiêm payload Time-Based Blind (SLEEP), 
 
 <img width="1018" height="493" alt="image" src="https://github.com/user-attachments/assets/2ae1324c-a693-4b31-9d30-3d696ac7de26" />
 
+Sự kiện 3: Tấn công Web thành công (A web attack returned code 200)
+
+Rule ID:31106
+
+Rule Level: 6 (Medium)
+
+Description:A web attack returned code 200 (success).
+
+MITRE ATT&CK:T1190 (Exploit Public-Facing Application - Initial Access)
+
+Bối cảnh:Sự kiện này diễn ra khi kẻ tấn công tiến hành dùng sqlmap quét sâu vào endpoint /products.php?id=1 và rất nhiều cảnh báo kiểu như này được hiện trên Dashboard
+
+<img width="1442" height="795" alt="image" src="https://github.com/user-attachments/assets/458a7b02-0ae7-46e7-a4da-da93c5fd1f31" />
+
+<img width="1360" height="796" alt="image" src="https://github.com/user-attachments/assets/8c6ae897-f41b-4692-8ab1-3347df08bc34" />
+
+
 ## 3. Giới hạn của SIEM
 
 Trong quá trình thử nghiệm thực tế, mình cũng đã phát hiện ra những điểm mù của hệ thống SIEM thuần dựa trên chữ ký (Signature-based):
 
 3.1. Bỏ lọt Authentication Bypass (OR 1=1)
+
 Hiện tượng: Khi thực thi curl với payload login.php?user=admin'%20OR%20'1'='1, Nginx ghi nhận log đầy đủ với mã HTTP 200 OK, nhưng Wazuh hoàn toàn không có alert.
+
 Nguyên nhân: Tập luật mặc định của Wazuh được tối ưu hóa để tránh báo động giả, chủ yếu quét các từ khóa truy vấn mạnh (SELECT, UNION, SLEEP). Payload chứa OR 1=1 không kích hoạt các từ khóa này nên bị Regex bỏ qua.
 
-3.2. SQLMap quét ầm ầm nhưng cũng không tạo ra alert
-Hiện tượng: Mặc dù sqlmap đã gửi 76 request và gây ra 57 lỗi HTTP 500, Dashboard không xuất hiện lượng cảnh báo dồn dập như kỳ vọng.
-Nguyên nhân: 
-    1. Có thể SQLMap sử dụng các payload Boolean-based blind đơn giản không chứa từ khóa nhạy cảm nặng.
-    2. Tốc độ gửi request quá nhanh có thể kích hoạt cơ chế chống nghẽn (Anti-flooding) của Wazuh Agent.
+3.2. SQLMap 
+
+Hiện tượng: Khi sử dụng SQLMap , rất nhiều yêu cầu chứa mã độc được gửi đến Web Server trong một khoảng thời gian cực ngắn. Tuy nhiên, trên Wazuh Dashboard, hệ thống chỉ ghi nhận các cảnh báo đơn lẻ rời rạc ở mức độ trung bình (level 6) mà không hề có một cảnh báo cấp độ cao nào tự động bùng nổ để phản ánh toàn cục quy mô của cuộc tấn công.
 
 Và để khắc phục những điểm mù này, mình đã viết thêm những rules nhằm để nâng cấp wazuh để đưa ra các cảnh báo sát hơn với thực tế ở phần custom-rules
 
