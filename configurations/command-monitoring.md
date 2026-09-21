@@ -18,7 +18,8 @@ Bước 3: Cấu hình Wazuh Agent thu thập log của Auditd
 <img width="432" height="78" alt="image" src="https://github.com/user-attachments/assets/46a26235-8ed0-46f6-96ad-f5acbf0bd118" />
 
 ## Phần 2: Cấu hình trên máy chủ Wazuh Server
-Bước 1: Tạo danh sách các chương trình đáng ngờ (CDB List)
+
+Bước 1: Tạo danh sách các chương trình đáng ngờ (dành cho Ubuntu)
 
 <<img width="956" height="221" alt="image" src="https://github.com/user-attachments/assets/c9816421-d59f-439b-8cd1-334386c8daa9" />
 
@@ -31,6 +32,15 @@ Bước 3: Tạo Rule cảnh báo
 
 <img width="913" height="181" alt="image" src="https://github.com/user-attachments/assets/6688851e-c7cb-40c4-aecc-2fc1d89a3217" />
 
+Bước 4: Tạo một file danh sách tên tiến trình đáng ngờ trên server (dành cho windows)
+
+<img width="878" height="227" alt="image" src="https://github.com/user-attachments/assets/68fa8fe3-93a3-4b89-a385-98980180bece" />
+
+Bước 5: Viết Rule bẫy theo tên tiến trình mới
+
+<img width="932" height="132" alt="image" src="https://github.com/user-attachments/assets/790fb553-0c9c-4835-bdab-5a3512b3d8cd" />
+
+
 ## Phần 3: Cấu hình trên máy Windows Agent
 Bước 1: Bật chính sách Audit Process Creation
 
@@ -39,6 +49,9 @@ Bước 1: Bật chính sách Audit Process Creation
 Bước 2: Xác nhận thu thập log bảo mật trên Wazuh Agent
 
 <img width="507" height="65" alt="image" src="https://github.com/user-attachments/assets/5c89dee1-3b38-405d-8f30-6273510a34c9" />
+
+
+
 
 
 
